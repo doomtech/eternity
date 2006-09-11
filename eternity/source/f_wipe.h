@@ -34,6 +34,7 @@
 void Wipe_Drawer();
 void Wipe_Ticker();
 void Wipe_StartScreen();
+void Wipe_ScreenReset();
 
 extern boolean inwipe;
 extern int wipe_speed;
