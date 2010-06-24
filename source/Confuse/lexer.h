@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
-// Copyright(C) 2009 James Haley
+// Copyright(C) 2010 James Haley
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,38 +19,23 @@
 //--------------------------------------------------------------------------
 //
 // DESCRIPTION:  
-//    EDF Font Definitions
+//    Lexer header for custom libConfuse lexer.
 //
 //-----------------------------------------------------------------------------
 
-#ifndef E_FONTS_H__
-#define E_FONTS_H__
+#ifndef LEXER_H__
+#define LEXER_H__
 
-#include "v_font.h"
+extern char *mytext; // haleyjd
 
-#ifdef NEED_EDF_DEFINITIONS
-
-#define EDF_SEC_FONT "font"
-
-#define ITEM_FONT_HUD     "hu_font"
-#define ITEM_FONT_HUDO    "hu_overlayfont"
-#define ITEM_FONT_MENU    "mn_font"
-#define ITEM_FONT_BMENU   "mn_font_big"
-#define ITEM_FONT_NMENU   "mn_font_normal"
-#define ITEM_FONT_FINAL   "f_font"
-#define ITEM_FONT_INTR    "in_font"
-#define ITEM_FONT_INTRB   "in_font_big"
-#define ITEM_FONT_INTRBN  "in_font_bignum"
-#define ITEM_FONT_CONS    "c_font"
-
-extern cfg_opt_t edf_font_opts[];
-void    E_ProcessFonts(cfg_t *);
-
-#endif
-
-vfont_t *E_FontForName(const char *);
-vfont_t *E_FontForNum(int);
-int      E_FontNumForName(const char *);
+int   mylex(cfg_t *cfg);
+int   lexer_init(cfg_t *cfg, struct DWFILE_s *);
+void  lexer_reset(void);
+void  lexer_set_unquoted_spaces(cfg_bool_t);
+char *cfg_lexer_open(const char *filename, int lumpnum, size_t *len);
+char *cfg_lexer_mustopen(cfg_t *cfg, const char *filename, int lumpnum, size_t *len);
+int   cfg_lexer_include(cfg_t *cfg, char *buffer, const char *fname, int lumpnum);
+int   cfg_lexer_source_type(cfg_t *cfg);
 
 #endif
 
