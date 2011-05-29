@@ -30,6 +30,8 @@
 #define GL_TEXTURE_H__
 
 unsigned int GL_MakeTextureDimension(unsigned int i);
+void GL_BindTextureAndRemember(GLuint texture);
+void GL_BindTextureIfNeeded(GLuint texture);
 
 #endif
 

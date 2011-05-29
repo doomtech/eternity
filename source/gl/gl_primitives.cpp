@@ -21,62 +21,31 @@
 //
 // DESCRIPTION:
 //   
-//  OpenGL Texture Mapping Functions
+//  OpenGL Primitives
 //  haleyjd 05/15/11
 //
 //-----------------------------------------------------------------------------
 
 #include "gl_includes.h"
+#include "gl_primitives.h"
 
 //
-// GL_MakeTextureDimension
+// GL_OrthQuadTextured
 //
-// Gets the next higher power of two, which will be a suitable texture 
-// dimension for standard OpenGL textures.
-//
-// Based on:
-// http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
-//
-unsigned int GL_MakeTextureDimension(unsigned int i)
+// Push a textured quad of size (w, h) at upper-left-hand coordinate (x, y) with
+// texture coordinates starting from the (x, y) corner. Intended for use in an
+// ortho projection. Bind texture beforehand and call glBegin(GL_QUADS).
+// 
+void GL_OrthoQuadTextured(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-   if(i)
-   {
-      --i;
-      i |= i >> 1;
-      i |= i >> 2;
-      i |= i >> 4;
-      i |= i >> 8;
-      i |= i >> 16;
-      ++i;
-   }
-
-   return i;
-}
-
-static GLuint boundtexture;
-
-//
-// GL_BindTextureAndRemember
-//
-// Binds the texture unconditionally and remembers the fact that this texture
-// is the currently bound texture.
-//
-void GL_BindTextureAndRemember(GLuint texture)
-{
-   glBindTexture(GL_TEXTURE_2D, texture);
-   boundtexture = texture;
-}
-
-//
-// GL_BindTextureIfNeeded
-//
-// Binds the texture only if it isn't already remembered as the currently bound
-// texture.
-//
-void GL_BindTextureIfNeeded(GLuint texture)
-{
-   if(boundtexture != texture)
-      glBindTexture(GL_TEXTURE_2D, texture);
+   glTexCoord2f(0.0f, 0.0f);
+   glVertex2f(x, y);
+   glTexCoord2f(0.0f, 1.0f);     
+   glVertex2f(x, y + h);
+   glTexCoord2f(1.0f, 1.0f);
+   glVertex2f(x + w, y + h);
+   glTexCoord2f(1.0f, 0.0f);
+   glVertex2f(x + w, y);
 }
 
 // EOF
