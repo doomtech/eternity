@@ -339,6 +339,7 @@ void seekdir(DIR *dirp, long lPos)
    }
 }
 
-#endif // ifndef __MINGW32__ 
+#endif // ifndef __MINGW32__ 
+
 // EOF
 
