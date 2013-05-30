@@ -18,3 +18,8 @@ source/sdl/macosx/build/EternityEngine.build/EternityEngine.pbxindex/subclasses.
 source/sdl/macosx/build/EternityEngine.build/EternityEngine.pbxindex/symbols0.pbxsymbols
 source/sdl/macosx/launcher/EternityLaunch.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/Eternity Engine.xcscheme
 source/sdl/macosx/launcher/EternityLaunch.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/xcschememanagement.plist
+macosx/staticlib
+macosx/launcher/EternityLaunch.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/Eternity Engine.xcscheme
+macosx/launcher/EternityLaunch.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/xcschememanagement.plist
+macosx/EternityEngine.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/Eternity Engine.xcscheme
+macosx/EternityEngine.xcodeproj/xcuserdata/ioan.xcuserdatad/xcschemes/xcschememanagement.plist
