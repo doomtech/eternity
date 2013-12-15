@@ -214,7 +214,6 @@ struct sector_t
    int floorlightsec, ceilinglightsec;
    
    int bottommap, midmap, topmap; // killough 4/4/98: dynamic colormaps
-   uint8_t color;
    
    // killough 10/98: support skies coming from sidedefs. Allows scrolling
    // skies and other effects. No "level info" kind of lump is needed, 
@@ -568,13 +567,11 @@ struct visplane_t
    
    // Needed for overlays
    // This is the table the visplane currently belongs to
-   planehash_t *table;
+   planehash_t           *table;
    // This is the blending flags from the portal surface (flags & PS_OVERLAYFLAGS)
-   int          bflags; 
+   int                    bflags; 
    // Opacity of the overlay (255 - opaque, 0 - translucent)
-   byte         opacity;
-   // Sector color
-   byte         color;
+   byte                   opacity;
 };
 
 struct planehash_t

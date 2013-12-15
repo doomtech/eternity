@@ -63,7 +63,6 @@ visplane_t *R_FindPlane(fixed_t height,
                         pslope_t *slope,     // SoM: slopes
                         int blendflags,      // SoM: Blending flags for the plane
                         byte opacity,        // SoM: Opacity for translucent planes
-                        byte color,          // haleyjd
                         planehash_t *table); // SoM: Table. Can be NULL
 
 visplane_t *R_CheckPlane(visplane_t *pl, int start, int stop);
@@ -82,13 +81,12 @@ typedef struct cb_span_s
    unsigned int xshift, xmask, yshift, ymask;
 } cb_span_t;
 
-struct cb_plane_t
+typedef struct cb_plane_s
 {
    float xoffset, yoffset;
    float height;
    float pviewx, pviewy, pviewz, pviewsin, pviewcos;
    int   picnum;
-   byte  color;
 
    // SoM: we use different fixed point numbers for different flat sizes
    float fixedunitx, fixedunity;
@@ -107,7 +105,7 @@ struct cb_plane_t
    rslope_t *slope;
 
    void (*MapFunc)(int, int, int);
-};
+} cb_plane_t;
 
 typedef struct cb_slopespan_s
 {

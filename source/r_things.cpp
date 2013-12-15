@@ -35,7 +35,6 @@
 #include "doomstat.h"
 #include "e_edf.h"
 #include "g_game.h"
-#include "i_video.h"
 #include "m_argv.h"
 #include "m_swap.h"
 #include "p_chase.h"
@@ -149,7 +148,6 @@ typedef struct vissprite_s
   fixed_t texturemid;
   int     patch;
   byte    drawstyle;
-  byte    seccolor;
 
   float   startx;
   float   dist, xstep;
@@ -603,7 +601,6 @@ static void R_DrawMaskedColumn(column_t *tcolumn)
          column.texmid = basetexturemid - (tcolumn->topdelta << FRACBITS);
 
          colfunc();
-         I_DrawColorColumn(column.x, column.y1, column.y2, column.color);
       }
 
       tcolumn = (column_t *)((byte *)tcolumn + tcolumn->length + 4);
@@ -640,7 +637,6 @@ void R_DrawNewMaskedColumn(texture_t *tex, texcol_t *tcol)
          // Drawn by either R_DrawColumn
          //  or (SHADOW) R_DrawFuzzColumn.
          colfunc();
-         I_DrawColorColumn(column.x, column.y1, column.y2, column.color);
       }
 
       tcol = tcol->next;
@@ -674,7 +670,6 @@ static void R_DrawVisSprite(vissprite_t *vis, int x1, int x2)
    patch = PatchLoader::CacheNum(wGlobalDir, vis->patch+firstspritelump, PU_CACHE);
    
    column.colormap = vis->colormap;
-   column.color    = vis->seccolor;
    
    // killough 4/11/98: rearrange and handle translucent sprites
    // mixed with translucent/non-translucent 2s normals
@@ -919,7 +914,6 @@ static void R_ProjectSprite(Mobj *thing)
    // killough 3/27/98: save sector for special clipping later   
    vis->heightsec = heightsec;
    
-   vis->seccolor = 0;
    vis->colour = thing->colour;
    vis->gx = thing->x;
    vis->gy = thing->y;
@@ -974,7 +968,6 @@ static void R_ProjectSprite(Mobj *thing)
       if(index >= MAXLIGHTSCALE)
          index = MAXLIGHTSCALE-1;
       vis->colormap = spritelights[index];
-      vis->seccolor = thing->subsector->sector->color;
    }
 
    vis->drawstyle = VS_DRAWSTYLE_NORMAL;
@@ -993,9 +986,6 @@ static void R_ProjectSprite(Mobj *thing)
       else if(thing->flags & MF_TRANSLUCENT)
          vis->drawstyle = VS_DRAWSTYLE_TRANMAP;
    }
-
-   if(vis->drawstyle != VS_DRAWSTYLE_NORMAL)
-      vis->seccolor = 0;
 }
 
 //
@@ -1142,7 +1132,6 @@ static void R_DrawPSprite(pspdef_t *psp)
    vis->ytop = (view.height * 0.5f) - (M_FixedToFloat(vis->texturemid) * vis->scale);
    vis->ybottom = vis->ytop + (spriteheight[lump] * vis->scale);
    vis->sector = viewplayer->mo->subsector->sector - sectors;
-   vis->seccolor = viewplayer->mo->subsector->sector->color;
    
    // haleyjd 07/01/07: use actual pixel range to scale graphic
    if(flip)

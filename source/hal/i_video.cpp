@@ -178,9 +178,6 @@ char *i_videomode;
 // haleyjd 06/17/11: software-mode bitdepth setting (for better -8in32)
 int i_softbitdepth;
 
-// haleyjd 12/14/13: driver has color palettes support
-static bool driverhascolors;
-
 //
 // I_FinishUpdate
 //
@@ -235,30 +232,6 @@ void I_SetPalette(byte *palette)
 {
    if(in_graphics_mode)             // killough 8/11/98
       i_video_driver->SetPalette(palette);
-}
-
-//
-// I_DrawColorColumn
-//
-// Draw a column of palette indices to the video driver's palette
-// buffer, if it supports such an operation.
-//
-void I_DrawColorColumn(int x, int y1, int y2, byte color)
-{
-   if(driverhascolors)
-      i_video_driver->drawColorColumn(x, y1, y2, color);
-}
-
-//
-// I_DrawColorSpan
-//
-// Draw a span of palette indices to the video driver's palette
-// buffer, if it supports such an operation.
-//
-void I_DrawColorSpan(int y, int x1, int x2, byte color)
-{
-   if(driverhascolors)
-      i_video_driver->drawColorSpan(y, x1, x2, color);
 }
 
 void I_ShutdownGraphics()
@@ -482,7 +455,6 @@ static bool I_InitGraphicsMode()
       in_graphics_mode = true;  // now in graphics mode
       in_textmode      = false; // no longer in text mode
       setsizeneeded    = true;  // should initialize screen size
-      driverhascolors  = i_video_driver->hasColors();
 
       I_InitDiskFlash();        // initialize disk flasher
    }

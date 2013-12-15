@@ -40,7 +40,6 @@ protected:
    int colordepth;
 
    void DrawPixels(void *buffer, unsigned int width);
-   void DrawColorPixels(void *buffer, unsigned int destwidth);
    void LoadPBOExtension();
 
    virtual void SetPrimaryBuffer();
@@ -57,9 +56,6 @@ public:
    virtual void ShutdownGraphics();
    virtual void ShutdownGraphicsPartway();
    virtual bool InitGraphicsMode();
-   virtual bool hasColors() const;
-   virtual void drawColorColumn(int x, int y1, int y2, byte color);
-   virtual void drawColorSpan(int y, int x1, int x2, byte color);
 
    // Accessors
    void SetColorDepth(int cd) { colordepth = cd; }
