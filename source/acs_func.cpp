@@ -963,8 +963,10 @@ static void ACS_funcSetThingPosition(ACS_FUNCARG)
 
          mo->x = x;
          mo->y = y;
-
+         
+         mo->backupPosition();
          clip->setThingPosition(mo);
+
 
          // Handle fog.
          if(fog)

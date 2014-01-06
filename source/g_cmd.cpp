@@ -52,6 +52,7 @@
 #include "mn_engin.h"
 #include "mn_misc.h"  // haleyjd
 #include "p_inter.h"
+#include "p_mobj.h"
 #include "p_partcl.h" // haleyjd: add particle event cmds
 #include "p_setup.h"
 #include "p_user.h"
@@ -606,12 +607,6 @@ CONSOLE_VARIABLE(w_norestpath, w_norestpath, cf_allowblank)
 
 VARIABLE_BOOLEAN(use_doom_config, NULL, yesno);
 CONSOLE_VARIABLE(use_doom_config, use_doom_config, 0) {}
-
-CONSOLE_COMMAND(m_resetcomments, 0)
-{
-   M_ResetDefaultComments();
-   M_ResetSysComments();
-}
 
 CONSOLE_COMMAND(spectate_prev, 0)
 {

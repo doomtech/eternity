@@ -1,4 +1,4 @@
-// Emacs style mode select -*- C++ -*-
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright (C) 2013 James Haley et al.
@@ -18,22 +18,15 @@
 //
 //--------------------------------------------------------------------------
 //
-// Heretic-specific menu code
-//
-// By James Haley
+// DESCRIPTION:
+//   Sector effects.
 //
 //-----------------------------------------------------------------------------
 
-#ifndef MN_HTIC_H__
-#define MN_HTIC_H__
+#ifndef P_SECTOR_H__
+#define P_SECTOR_H__
 
-#include "mn_engin.h"
-
-void MN_HInitSkull();
-void MN_AddHMenus();
-void MN_HticNewGame();
-
-extern menu_t menu_hmain;
+void P_SaveSectorPositions();
 
 #endif
 

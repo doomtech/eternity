@@ -558,7 +558,7 @@ void A_PlayerScream(actionargs_t *actionargs)
       // haleyjd 09/29/07: wimpy death, if supported
       sound = sk_plwdth;
    }
-   else if(GameModeInfo->id == shareware || mo->health >= -50)
+   else if((GameModeInfo->flags & GIF_NODIEHI) || mo->health >= -50)
    {
       // Default death sound
       sound = sk_pldeth; 
@@ -634,6 +634,9 @@ void A_PlayerSkull(actionargs_t *actionargs)
    head->player = actor->player;
    head->health = actor->health;
    head->angle  = actor->angle;
+
+   // player object needs to backup new view angle
+   head->backupPosition();
 
    // clear old body of player
    actor->flags &= ~MF_SOLID;

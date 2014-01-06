@@ -37,6 +37,7 @@
 // Needs precompiled tables/data structures.
 #include "info.h"
 #include "m_fixed.h"
+#include "r_interpolate.h"
 #include "tables.h"
 
 struct msecnode_t;
@@ -208,6 +209,7 @@ public:
    virtual void deSwizzle();
 
    // Methods
+   void backupPosition();
    void copyPosition(const Mobj *other);
    
    // Data members
@@ -349,6 +351,8 @@ public:
    // clipping pass (map architecture + 3d sides).
    fixed_t passfloorz;
    fixed_t passceilz;
+
+   prevpos_t prevpos;   // previous position for interpolation
 
    // scripting fields
    int args[NUMMTARGS]; // arguments

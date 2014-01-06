@@ -1297,6 +1297,8 @@
     <ClInclude Include="..\source\m_binary.h" />
     <ClInclude Include="..\source\m_compare.h" />
     <ClInclude Include="..\source\m_ctype.h" />
+    <ClInclude Include="..\source\p_sector.h" />
+    <ClInclude Include="..\source\r_interpolate.h" />
     <ClInclude Include="..\source\p_clipen.h" />
     <ClInclude Include="..\source\p_map.h" />
     <ClInclude Include="..\source\p_mapcontext.h" />

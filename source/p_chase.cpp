@@ -77,6 +77,7 @@ int chasecam_dist;
 
 void P_GetChasecamTarget()
 {
+   TracerContext *tc = trace->getContext();
    int aimfor;
    subsector_t *ss;
    int ceilingheight, floorheight;
@@ -87,8 +88,6 @@ void P_GetChasecamTarget()
    aimfor = players[displayplayer].viewheight + chasecam_height*FRACUNIT 
                + FixedDiv(players[displayplayer].pitch, ANGLE_1);
       
-   TracerContext *tc = trace->getContext();
-   
    tc->sin = finesine[playerangle>>ANGLETOFINESHIFT];
    tc->cos = finecosine[playerangle>>ANGLETOFINESHIFT];
    
@@ -107,8 +106,6 @@ void P_GetChasecamTarget()
    // check for intersections
    trace->pathTraverse(playermobj->x, playermobj->y, targetx, targety,
                        PT_ADDLINES, PTR_chasetraverse, tc);
-                       
-   tc->done();
 
    ss = R_PointInSubsector(targetx, targety);
    
@@ -120,6 +117,8 @@ void P_GetChasecamTarget()
       targetz = ceilingheight - 10*FRACUNIT;
    if(targetz < floorheight + 10*FRACUNIT)
       targetz = floorheight + 10*FRACUNIT;
+
+   tc->done();
 }
 
 // the 'speed' of the chasecam: the percentage closer we

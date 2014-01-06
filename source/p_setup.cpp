@@ -96,6 +96,9 @@ seg_t    *segs;
 int      numsectors;
 sector_t *sectors;
 
+// haleyjd 01/05/14: sector interpolation data
+sectorinterp_t *sectorinterps;
+
 int      numsubsectors;
 subsector_t *subsectors;
 
@@ -574,6 +577,24 @@ void P_LoadSectors(int lumpnum)
 }
 
 //
+// P_CreateSectorInterps
+//
+// haleyjd 01/05/14: Create sector interpolation structures.
+//
+static void P_CreateSectorInterps()
+{
+   sectorinterps = estructalloctag(sectorinterp_t, numsectors, PU_LEVEL);
+
+   for(int i = 0; i < numsectors; i++)
+   {
+      sectorinterps[i].prevfloorheight    = sectors[i].floorheight;
+      sectorinterps[i].prevceilingheight  = sectors[i].ceilingheight;
+      sectorinterps[i].prevfloorheightf   = sectors[i].floorheightf;
+      sectorinterps[i].prevceilingheightf = sectors[i].ceilingheightf;
+   }
+}
+
+//
 // P_CalcNodeCoefficients
 //
 // haleyjd 06/14/10: Separated from P_LoadNodes, this routine precalculates
@@ -964,7 +985,7 @@ void P_LoadThings(int lump)
    // haleyjd 03/03/07: allocate full mapthings
    mapthings = ecalloc(mapthing_t *, numthings, sizeof(mapthing_t));
    
-   for(i = 0; i < numthings; ++i)
+   for(i = 0; i < numthings; i++)
    {
       mapthingdoom_t *mt = (mapthingdoom_t *)data + i;
       mapthing_t     *ft = &mapthings[i];
@@ -2232,7 +2253,7 @@ static void P_SetupLevelError(const char *msg, const char *levelname)
 // Called when loading a new map.
 // haleyjd 06/04/05: moved here and renamed from HU_NewLevel
 //
-static void P_NewLevelMsg(void)
+static void P_NewLevelMsg()
 {   
    C_Printf("\n");
    C_Separator();
@@ -2245,11 +2266,9 @@ static void P_NewLevelMsg(void)
 //
 // haleyjd 2/18/10: clears various player-related data.
 //
-static void P_ClearPlayerVars(void)
+static void P_ClearPlayerVars()
 {
-   int i;
-
-   for(i = 0; i < MAXPLAYERS; ++i)
+   for(int i = 0; i < MAXPLAYERS; i++)
    {
       if(playeringame[i] && players[i].playerstate == PST_DEAD)
          players[i].playerstate = PST_REBORN;
@@ -2269,7 +2288,7 @@ static void P_ClearPlayerVars(void)
    wminfo.partime = 180;
 
    // Initial height of PointOfView will be set by player think.
-   players[consoleplayer].viewz = 1;
+   players[consoleplayer].viewz = players[consoleplayer].prevviewz = 1;
 }
 
 //
@@ -2278,7 +2297,7 @@ static void P_ClearPlayerVars(void)
 // haleyjd 2/18/10: actions that must be performed immediately prior to 
 // Z_FreeTags should be kept here.
 //
-static void P_PreZoneFreeLevel(void)
+static void P_PreZoneFreeLevel()
 {
    //==============================================
    // Clear player data
@@ -2385,13 +2404,11 @@ static void P_InitNewLevel(int lumpnum, WadDirectory *waddir)
 //
 // If deathmatch, randomly spawn the active players
 //
-static void P_DeathMatchSpawnPlayers(void)
+static void P_DeathMatchSpawnPlayers()
 {
    if(GameType == gt_dm)
    {
-      int i;
-
-      for(i = 0; i < MAXPLAYERS; ++i)
+      for(int i = 0; i < MAXPLAYERS; i++)
       {
          if(playeringame[i])
          {
@@ -2553,6 +2570,9 @@ void P_SetupLevel(WadDirectory *dir, const char *mapname, int playermask,
    
    // possible error: missing flats
    CHECK_ERROR();
+
+   // haleyjd 01/05/14: create sector interpolation data
+   P_CreateSectorInterps();
 
    P_LoadSideDefs(lumpnum + ML_SIDEDEFS); // killough 4/4/98
 

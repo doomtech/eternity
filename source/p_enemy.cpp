@@ -1374,6 +1374,7 @@ void P_BossTeleport(bossteleport_t *bt)
       boss->z = boss->floorz;
       boss->angle = targ->angle;
       boss->momx = boss->momy = boss->momz = 0;
+      boss->backupPosition();
    }
 }
 
@@ -1501,17 +1502,6 @@ void P_ClericTeleport(Mobj *actor)
    bt.soundNum  = sfx_itmbk;                // use item respawn sound
 
    P_BossTeleport(&bt);
-}
-
-void A_DwarfAlterEgoChase(Mobj *actor)
-{
-   if(actor->counters[0])
-   {
-      actor->counters[0]--;
-      A_Chase(actor);
-   }
-   else
-      A_Die(actor);
 }
 #endif
 
@@ -1731,9 +1721,9 @@ CONSOLE_COMMAND(viles, cf_notnet|cf_level|cf_hidden)
       
       S_ChangeMusicNum(mus_stalks, true);
       
-      P_ConsoleSummon(vileType,  0,     1, "FRIEND");
-      P_ConsoleSummon(vileType,  ANG45, 1, "FRIEND");
-      P_ConsoleSummon(vileType, -ANG45, 1, "FRIEND");
+      P_ConsoleSummon(vileType, 0,            1, "FRIEND");
+      P_ConsoleSummon(vileType, ANG45,        1, "FRIEND");
+      P_ConsoleSummon(vileType, ANG270+ANG45, 1, "FRIEND");
    }
 }
 
@@ -1820,11 +1810,10 @@ CONSOLE_COMMAND(mdk, cf_notnet|cf_level)
 CONSOLE_COMMAND(mdkbomb, cf_notnet|cf_level)
 {
    player_t *plyr = &players[consoleplayer];
-   int i;
    fixed_t slope;
    int damage = 10000;
 
-   for(i = 0; i < 60; ++i)  // offset angles from its attack angle
+   for(int i = 0; i < 60; i++)  // offset angles from its attack angle
    {
       angle_t an = (ANG360/60)*i;
       
@@ -1875,16 +1864,14 @@ CONSOLE_COMMAND(vilehit, cf_notnet|cf_level)
 
 void P_SpawnPlayer(mapthing_t* mthing);
 
-static void P_ResurrectPlayer(void)
+static void P_ResurrectPlayer()
 {
    player_t *p = &players[consoleplayer];
 
    if(p->health <= 0 || p->mo->health <= 0 || p->playerstate == PST_DEAD)
    {
-      mapthing_t mthing;
+      edefstructvar(mapthing_t, mthing);
       Mobj *oldmo = p->mo;
-
-      memset(&mthing, 0, sizeof(mapthing_t));
 
       mthing.x     = (int16_t)(p->mo->x >> FRACBITS);
       mthing.y     = (int16_t)(p->mo->y >> FRACBITS);
